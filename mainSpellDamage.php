@@ -7,6 +7,8 @@ class SpellDamage
     private $spellpatern = array();
     private $spellsbuffor = array();
     private $damage;
+    private $spellstartchars = "fe";
+    private $spellendchars = "ai";
 
     public function __construct()
     {
@@ -24,13 +26,13 @@ class SpellDamage
     {
         $this->spellsbuffor = array();
         $spell_ok = true;
-        $start = strpos($spell, "fe", 0);
-        $end = strrpos($spell, "ai", 0);
+        $start = strpos($spell, $this->spellstartchars, 0);
+        $end = strrpos($spell, $this->spellendchars, 0);
 
         if ($start === false || $end === false) {
             $spell_ok = false;
         } else {
-            $spell = substr($spell, $start, $end - $start + strlen("ai"));
+            $spell = substr($spell, $start, $end - $start + strlen($this->spellendchars));
             if (strpos($spell, "fe", 1) > 0) {
                 $spell_ok = false;
             }
@@ -63,8 +65,6 @@ class SpellDamage
 
         $res1 = substr($spell, 0, 2);
         $res2 = substr($spell, 0, 3);
-        $damage1 = 0;
-        $damage2 = 0;
         if (isset($this->spellpatern[$res1])) {
             if (strlen(substr($spell, 2)) >= 2) {
                 $this->damage(substr($spell, 2), $string . ',' . $this->spellpatern[$res1]);
